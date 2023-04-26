@@ -13,6 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
 import streamlit as st
 import base64
+import time
 
 
 # In[2]:
@@ -21,6 +22,7 @@ import base64
 def main():
     st.set_page_config(page_title="My Beautiful Page")
     st.title("My Beautiful Page")
+    index_song = None
 
 #     # Add text inputs and button
 #     input1 = st.text_input("Enter your name")
@@ -61,7 +63,7 @@ def main():
     scaler = StandardScaler()
     km_data = scaler.fit_transform(df_encode[km_features])
 
-    kmeans = KMeans(n_clusters=30, random_state=0, n_init="auto").fit_predict(km_data)
+    kmeans = KMeans(n_clusters=30).fit_predict(km_data)
 
     normalized_data = pd.DataFrame(normalized_data)
 
@@ -80,39 +82,76 @@ def main():
         return df.iloc[top_indexes],artist_list
 
 
-    def content_based_recommend(songname):
+    def content_based_recommend(songname,index_song):
         song = songname
-        try:
-            if df[df.track_name.str.lower()==song.lower()].shape[0]>1:
-                display(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
-                index_song = int(input())
-                display(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]).iloc[:3])
-                s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
-                alb_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['album_name']
-            #     recommendations = recommend_songs(s_name,alb_name, no_of_recommendations=5)
-            else:
-                display(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[0])[:3])
-                s_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['track_name'])
-                alb_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['album_name'])
-            cluster_to_use = df1[(df1.track_name == s_name)&(df1.album_title == alb_name)].Cluster.iloc[0]
-            all_songs_cluster = df1[df1.Cluster == cluster_to_use]
+        if df[df.track_name.str.lower()==song.lower()].shape[0]>1:
+            st.dataframe(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]).iloc[:3])
+            s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
+            alb_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['album_name']
+        else:
+            st.dataframe(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[0])[:3])
+            s_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['track_name'])
+            alb_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['album_name'])
+        cluster_to_use = df1[(df1.track_name == s_name)&(df1.album_title == alb_name)].Cluster.iloc[0]
+        all_songs_cluster = df1[df1.Cluster == cluster_to_use]
+        # try:
+        #     if df[df.track_name.str.lower()==song.lower()].shape[0]>1:
+        #         st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
+        #         # index_song = int(input())
 
-        except:
-            print('The song is not available in our data!')
-            return
+        #         index_song = st.number_input('Which one of these?', format='int',step=1,va;ue=-
+                
+        #         print(index_song)
+        #         st.dataframe(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]).iloc[:3])
+        #         s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
+        #         alb_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['album_name']
+        #     #     recommendations = recommend_songs(s_name,alb_name, no_of_recommendations=5)
+        #     else:
+        #         st.dataframe(pd.DataFrame(df[df.track_name.str.lower()==song.lower()].iloc[0])[:3])
+        #         s_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['track_name'])
+        #         alb_name = str(df[df.track_name.str.lower()==song.lower()].iloc[0]['album_name'])
+        #     cluster_to_use = df1[(df1.track_name == s_name)&(df1.album_title == alb_name)].Cluster.iloc[0]
+        #     all_songs_cluster = df1[df1.Cluster == cluster_to_use]
+
+        # except:
+        #     print('The song is not available in our data!')
+        #     return
 
         similarity_matrix = cosine_similarity(all_songs_cluster.iloc[:,:-3])
         df2 = pd.DataFrame(similarity_matrix)
         df2 = df2.set_index(all_songs_cluster.index).rename_axis('idx',axis=0)
         df2.columns = df2.set_index(df2.index).index
         recommendations,artist_list = recommend_songs(s_name, alb_name ,df2, no_of_recommendations=10)
-        return pd.DataFrame(recommendations.iloc[:,:3])
+        result = pd.DataFrame(recommendations.iloc[:,:3])
+        return result
 
-        title = st.text_input('Which song is on your mind')
-        if st.button("Similar songs"):
-            output = content_based_recommend(title)
-            st.write(output)
-    
+    title = st.text_input('Which song is on your mind')
+    # st.dataframe()
+    if st.button("Similar songs"):
+        song = title
+        if sum(df.track_name.str.lower()==song.lower())==0:
+            st.write('The song is not available in our data!')
+        if sum(df.track_name.str.lower()==song.lower())==1:
+            output = content_based_recommend(title,None)
+            st.write('Here are the top 10 recommendations')
+            st.dataframe(output)
+        if sum(df.track_name.str.lower()==song.lower())>1:
+            st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
+            index_song_widget = st.empty()
+            index_song = index_song_widget.text_input("Enter song number", key="song_number_input")
+            submit_button = st.button("Submit", key="submit_button")
+            if submit_button:
+                index_song = int(index_song)
+                st.write(index_song)
+                s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
+                output = content_based_recommend(s_name,index_song)
+                st.write('Here are the top 10 recommendations')
+                st.dataframe(output)
+            else:
+                while not submit_button:
+                    time.sleep(0.1)
+                    submit_button = st.session_state.submit_button
+
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
