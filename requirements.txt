@@ -2,5 +2,4 @@ numpy
 pandas
 streamlit
 scikit-learn
-base64
 matplotlib
