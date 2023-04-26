@@ -73,11 +73,11 @@ def main():
     df1 = pd.concat([df1,pd.DataFrame(df.track_name),pd.DataFrame(df.album_name).rename(columns ={'album_name': 'album_title'})],axis =1)
     
     def recommend_songs(name,alb_name,df2, no_of_recommendations):
-    idx = df[(df['track_name'].str.lower() == name.lower()) & (df['album_name'].str.lower() == alb_name.lower())].index[0]
-    score_series = pd.Series(df2.loc[idx]).sort_values(ascending=False)
-    top_indexes = list(score_series.iloc[1:no_of_recommendations+1].index)
-    artist_list = list(set(df.iloc[top_indexes]['artists']))
-    return df.iloc[top_indexes],artist_list
+        idx = df[(df['track_name'].str.lower() == name.lower()) & (df['album_name'].str.lower() == alb_name.lower())].index[0]
+        score_series = pd.Series(df2.loc[idx]).sort_values(ascending=False)
+        top_indexes = list(score_series.iloc[1:no_of_recommendations+1].index)
+        artist_list = list(set(df.iloc[top_indexes]['artists']))
+        return df.iloc[top_indexes],artist_list
 
 
     def content_based_recommend(songname):
