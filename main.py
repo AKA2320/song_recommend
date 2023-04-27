@@ -126,15 +126,18 @@ def main():
         result = pd.DataFrame(recommendations.iloc[:,:3])
         index_song = None
         submit_button = st.session_state.get("submit_button", False)
+        st.session_state.submit_button = False
         return result
 
     title = st.text_input('Which song is on your mind')
     index_song = None
     submit_button = st.session_state.get("submit_button", False)
+    st.session_state.submit_button = False
     # st.dataframe()
     if st.button("Similar songs"):
         index_song = None
         submit_button = st.session_state.get("submit_button", False)
+        st.session_state.submit_button = False
         song = title
         if sum(df.track_name.str.lower()==song.lower())==0:
             st.write('The song is not available in our data!')
