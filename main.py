@@ -147,7 +147,7 @@ def main():
                 time.sleep(0.1)
                 submit_button = st.session_state.get("submit_button", False)
 #             if submit_button:
-            index_song = int(index_song)
+            index_song = int(float(index_song))
             st.write(index_song)
             s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
             output = content_based_recommend(s_name,index_song)
