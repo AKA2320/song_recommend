@@ -23,7 +23,7 @@ def main():
     st.set_page_config(page_title="Beat Buddy")
     st.title("Beat Buddy")
     index_song = None
-    add_bg_from_local('image1.jpeg')
+    add_bg_from_local('image.jpg')
 
 #     # Add text inputs and button
 #     input1 = st.text_input("Enter your name")
