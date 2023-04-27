@@ -18,7 +18,7 @@ import time
 
 def main():
     st.set_page_config(page_title="BeatBuddy")
-    st.title("BeatBuddy")
+    st.title("BeatBuddy: A Music Recommendation System")
     index_song = None
     add_bg_from_local('image2.jpeg')
 
