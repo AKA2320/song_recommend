@@ -136,23 +136,21 @@ def main():
             st.write('Here are the top 10 recommendations')
             st.dataframe(output)
         if sum(df.track_name.str.lower()==song.lower())>1:
-            def wait_for_button_click(key12):
-                st.session_state.setdefault(key12, False)
-                while not st.session_state[key12]:
-                    time.sleep(0.1)
-                st.session_state[key12] = False
             st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
-            index_song_widget = st.empty()
-            index_song = index_song_widget.text_input("Enter song number", key="song_number_input")
-            submit_button = st.button("Submit", key=900)
-            if submit_button:
-                index_song = int(index_song)
-                st.write(index_song)
-                s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
-                output = content_based_recommend(s_name,index_song)
-                st.dataframe(output)
-            else:
-                wait_for_button_click(900)
+            index_song = st.text_input("Enter song number")
+            submit_button = st.session_state.get("submit_button", False)
+#             submit_button = st.button("Submit", key=900)
+            if st.button("Submit"):
+                st.session_state.submit_button = True
+            while not submit_button:
+                time.sleep(0.1)
+                submit_button = st.session_state.get("submit_button", False)
+#             if submit_button:
+            index_song = int(index_song)
+            st.write(index_song)
+            s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
+            output = content_based_recommend(s_name,index_song)
+            st.dataframe(output)
 
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as image_file:
