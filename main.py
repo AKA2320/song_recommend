@@ -124,9 +124,13 @@ def main():
         df2.columns = df2.set_index(df2.index).index
         recommendations,artist_list = recommend_songs(s_name, alb_name ,df2, no_of_recommendations=10)
         result = pd.DataFrame(recommendations.iloc[:,:3])
+        index_song = None
+        submit_button = st.session_state.get("submit_button", False)
         return result
 
     title = st.text_input('Which song is on your mind')
+    index_song = None
+    submit_button = st.session_state.get("submit_button", False)
     # st.dataframe()
     if st.button("Similar songs"):
         index_song = None
