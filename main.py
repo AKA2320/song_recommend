@@ -16,9 +16,6 @@ import base64
 import time
 
 
-# In[2]:
-
-
 def main():
     st.set_page_config(page_title="BeatBuddy")
     st.title("BeatBuddy")
