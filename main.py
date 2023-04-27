@@ -129,6 +129,7 @@ def main():
     title = st.text_input('Which song is on your mind')
     # st.dataframe()
     if st.button("Similar songs"):
+        submit_button = st.session_state.get("submit_button", False)
         song = title
         if sum(df.track_name.str.lower()==song.lower())==0:
             st.write('The song is not available in our data!')
