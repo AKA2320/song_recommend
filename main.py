@@ -61,7 +61,7 @@ def main():
     scaler = StandardScaler()
     km_data = scaler.fit_transform(df_encode[km_features])
 
-    kmeans = KMeans(n_clusters=30).fit_predict(km_data)
+    kmeans = KMeans(n_clusters=30,n_init=1).fit_predict(km_data)
 
     normalized_data = pd.DataFrame(normalized_data)
 
