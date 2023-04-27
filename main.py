@@ -23,7 +23,7 @@ def main():
     st.set_page_config(page_title="Beat Buddy")
     st.title("Beat Buddy")
     index_song = None
-#     add_bg_from_local('image.jpg')
+    add_bg_from_local('image.jpg')
 
 #     # Add text inputs and button
 #     input1 = st.text_input("Enter your name")
@@ -129,6 +129,7 @@ def main():
     title = st.text_input('Which song is on your mind')
     # st.dataframe()
     if st.button("Similar songs"):
+        index_song = None
         submit_button = st.session_state.get("submit_button", False)
         song = title
         if sum(df.track_name.str.lower()==song.lower())==0:
