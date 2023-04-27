@@ -136,11 +136,11 @@ def main():
             st.write('Here are the top 10 recommendations')
             st.dataframe(output)
         if sum(df.track_name.str.lower()==song.lower())>1:
-            def wait_for_button_click(key):
-                st.session_state.setdefault(key, False)
-                while not st.session_state[key]:
+            def wait_for_button_click(key12):
+                st.session_state.setdefault(key12, False)
+                while not st.session_state[key12]:
                     time.sleep(0.1)
-                st.session_state[key] = False
+                st.session_state[key12] = False
             st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
             index_song_widget = st.empty()
             index_song = index_song_widget.text_input("Enter song number", key="song_number_input")
