@@ -140,6 +140,7 @@ def main():
             index_song_widget = st.empty()
             index_song = index_song_widget.text_input("Enter song number", key="song_number_input")
             submit_button = st.button("Submit", key="submit_button")
+            st.session_state.setdefault("submit_button", False)
             if submit_button:
                 index_song = int(index_song)
                 st.write(index_song)
