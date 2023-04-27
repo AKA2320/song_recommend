@@ -144,7 +144,7 @@ def main():
             st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
             index_song_widget = st.empty()
             index_song = index_song_widget.text_input("Enter song number", key="song_number_input")
-            submit_button = st.button("Submit", key="submit_button")
+            submit_button = st.button("Submit", key=900)
             if submit_button:
                 index_song = int(index_song)
                 st.write(index_song)
@@ -152,7 +152,7 @@ def main():
                 output = content_based_recommend(s_name,index_song)
                 st.dataframe(output)
             else:
-                wait_for_button_click("submit_button")
+                wait_for_button_click(900)
 
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as image_file:
@@ -172,25 +172,5 @@ def add_bg_from_local(image_file):
 
 if __name__ == "__main__":
     main()
-
-
-# In[63]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-
-
-
-# In[ ]:
-
-
 
 
