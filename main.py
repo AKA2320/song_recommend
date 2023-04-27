@@ -22,7 +22,7 @@ import time
 def main():
     st.set_page_config(page_title="Beat Buddy")
     st.title("Beat Buddy")
-    index_song = None
+    index_song = 0
     add_bg_from_local('image.jpeg')
 
 #     # Add text inputs and button
