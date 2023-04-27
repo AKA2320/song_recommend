@@ -23,7 +23,7 @@ def main():
     st.set_page_config(page_title="Beat Buddy")
     st.title("Beat Buddy")
     index_song = None
-    add_bg_from_local('image.jpg')
+#     add_bg_from_local('image.jpg')
 
 #     # Add text inputs and button
 #     input1 = st.text_input("Enter your name")
@@ -140,13 +140,11 @@ def main():
             st.dataframe(df[df.track_name.str.lower()==song.lower()].iloc[:,:4])
             index_song = st.text_input("Enter song number")
             submit_button = st.session_state.get("submit_button", False)
-#             submit_button = st.button("Submit", key=900)
             if st.button("Submit"):
                 st.session_state.submit_button = True
             while not submit_button:
                 time.sleep(0.1)
                 submit_button = st.session_state.get("submit_button", False)
-#             if submit_button:
             index_song = int(float(index_song))
             st.write(index_song)
             s_name = df[df.track_name.str.lower()==song.lower()].iloc[index_song-1,:]['track_name']
