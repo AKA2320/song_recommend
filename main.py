@@ -20,10 +20,10 @@ import time
 
 
 def main():
-    st.set_page_config(page_title="Beat Buddy")
-    st.title("Beat Buddy")
+    st.set_page_config(page_title="BeatBuddy")
+    st.title("BeatBuddy")
     index_song = None
-    add_bg_from_local('image.jpeg')
+    add_bg_from_local('image2.jpeg')
 
 #     # Add text inputs and button
 #     input1 = st.text_input("Enter your name")
